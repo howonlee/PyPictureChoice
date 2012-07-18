@@ -1,5 +1,6 @@
 from Tkinter import *
 from ttk import *
+from picchoice.our_break import *
 
 class MainApp:
     def __init__(self, parent):
@@ -19,7 +20,7 @@ class MainApp:
         ''' toBlockClick
          pressed in main screen, goes to block screens '''
         self.container1.pack_forget()
-        block = Block(self.myParent)
+        block = Block(root)
  
 class Block:
     def __init__(self, parent):
@@ -38,7 +39,7 @@ class Block:
         ''' toChoiceCallback
         pressed in block screen, goes to choice screen'''
         self.container1.pack_forget()
-        choice = Choice(self.myParent)
+        choice = Choice(root)
 
 class Choice:
     def __init__(self, parent):
@@ -69,23 +70,7 @@ class Choice:
 
     def toBreakCallback(self, event):
         self.container1.pack_forget()
-        our_break = Break(self.myParent)
-
-class Break:
-    def __init__(self, parent):
-        self.myParent = parent
-        self.container1 = Frame(parent)
-        self.container1.pack()
-        self.breakLabel = Label(self.container1)
-        self.breakLabel.configure(text="Take a break")
-        self.toBlock = Button(self.container1)
-        self.toBlock.configure(text="Press to go to the next block")
-        self.toBlock.bind("<Button-1>", self.toBlockCallback)
-        self.toBlock.pack()
-    
-    def toBlockCallback(self, event):
-        self.container1.pack_forget() 
-        block = Block(self.myParent)
+        our_break = Break(root)
 
 root = Tk()
 app = MainApp(root)

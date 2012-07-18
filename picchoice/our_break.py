@@ -1,6 +1,5 @@
 from Tkinter import *
 from ttk import *
-from . import *
 
 class Break:
     def __init__(self, parent):
