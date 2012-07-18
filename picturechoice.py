@@ -19,7 +19,7 @@ class MainApp:
         ''' toBlockClick
          pressed in main screen, goes to block screens '''
         self.container1.pack_forget()
-        block = Block(root)
+        block = Block(self.myParent)
  
 class Block:
     def __init__(self, parent):
@@ -38,7 +38,7 @@ class Block:
         ''' toChoiceCallback
         pressed in block screen, goes to choice screen'''
         self.container1.pack_forget()
-        choice = Choice(root)
+        choice = Choice(self.myParent)
 
 class Choice:
     def __init__(self, parent):
@@ -69,7 +69,7 @@ class Choice:
 
     def toBreakCallback(self, event):
         self.container1.pack_forget()
-        our_break = Break(root)
+        our_break = Break(self.myParent)
 
 class Break:
     def __init__(self, parent):
@@ -85,7 +85,7 @@ class Break:
     
     def toBlockCallback(self, event):
         self.container1.pack_forget() 
-        block = Block(root)
+        block = Block(self.myParent)
 
 root = Tk()
 app = MainApp(root)
