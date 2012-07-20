@@ -1,77 +1,32 @@
 from Tkinter import *
 from ttk import *
-from picchoice.our_break import *
+from picchoice.mainapp import *
+import httplib, urllib
 
-class MainApp:
-    def __init__(self, parent):
-        self.myParent = parent
-        self.container1 = Frame(parent)
-        self.container1.pack()
-        self.mainLabel = Label(self.container1)
-        self.mainLabel.configure(text="Welcome to the experiment. Do not press the HOME button for the duration of the experiment.\n\nYou will see a sequence of 50 pictures, broken into two blocks. At the end of each picture, there will be a checkerboard mask. Press \"YES\" if there is an animal in the picture (People count as animals). Press \"NO\" if there is no animal in the picture.\n\nAfter you press the \"YES\" or \"NO\" button, the next picture will be displayed.\n\n")
-        self.mainLabel.pack()
-        self.toBlock = Button(self.container1)
-        self.toBlock.configure(text="Press to start game")
-        self.toBlock.focus_force()
-        self.toBlock.bind("<Button-1>", self.toBlockClick)
-        self.toBlock.pack()
-    
-    def toBlockClick(self, event):
-        ''' toBlockClick
-         pressed in main screen, goes to block screens '''
-        self.container1.pack_forget()
-        block = Block(root)
- 
-class Block:
-    def __init__(self, parent):
-        self.myParent = parent
-        self.container1 = Frame(parent)
-        self.container1.pack()
-        self.blockLabel = Label(self.container1)
-        self.blockLabel.configure(text="Block #: 0")
-        self.blockLabel.pack()
-        self.toChoice = Button(self.container1)
-        self.toChoice.configure(text="Press to start block")
-        self.toChoice.bind("<Button-1>", self.toChoiceCallback)
-        self.toChoice.pack()
+params = urllib.urlencode({'android_machine': 'PC', 'serial': 0})
+headers = {"Content-type" : "application/x-www-form-urlencoded",
+           "Accept": "text/plain"}
 
-    def toChoiceCallback(self, event):
-        ''' toChoiceCallback
-        pressed in block screen, goes to choice screen'''
-        self.container1.pack_forget()
-        choice = Choice(root)
+connection = httplib.HTTPConnection("www.stanford.edu")
+connection.request("POST", "/group/pdplab/cgi-bin/mobileexpscript.php", params, headers)
+response = connection.getresponse()
+print response.status, response.reason
+data = response.read()
+expId = int(data)
+print expId
+connection.close()
 
-class Choice:
-    def __init__(self, parent):
-        self.myParent = parent
-        self.container1 = Frame(parent)
-        self.container1.pack()
-        self.choice1 = Button(self.container1)
-        self.choice2 = Button(self.container1)
-        self.toBreak = Button(self.container1)
-        self.choice1.configure(text="Choice 1")
-        self.choice2.configure(text="Choice 2")
-        self.toBreak.configure(text="Take a Break")
-        self.choice1.bind("<Button-1>", self.choice1Callback)
-        self.choice2.bind("<Button-1>", self.choice2Callback)
-        self.toBreak.bind("<Button-1>", self.toBreakCallback)
-        self.choice1.pack()
-        self.choice2.pack()
+blockData = {'beginTime' : 0, 'endTime' : 0, 'breakBeginTime' : 0, 
+            'breakEndTime' : 0, 'interrupted' : False, 'expId' : expId,
+            'blockNum' : 1}
 
-    def choice1Callback(self, event):
-        self.choice1.pack_forget()
-        self.choice2.pack_forget()
-        self.toBreak.pack()
-
-    def choice2Callback(self, event):
-        self.choice1.pack_forget()
-        self.choice2.pack_forget()
-        self.toBreak.pack()
-
-    def toBreakCallback(self, event):
-        self.container1.pack_forget()
-        our_break = Break(root)
+version = 1 #for version checking
 
 root = Tk()
-app = MainApp(root)
+w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+root.overrideredirect(1)
+root.geometry("%dx%d+0+0" % (w, h))
+root.focus_set()
+root.bind("<Escape>", lambda e: e.widget.quit())
+app = MainApp(root, blockData)
 root.mainloop()
