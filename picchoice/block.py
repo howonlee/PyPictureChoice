@@ -6,10 +6,13 @@ class Block:
     def __init__(self, parent, blockData):
         self.myParent = parent
         self.myBlockData = blockData
+        self.blockLabelText = "Block #: " + str(self.myBlockData['blockNum'])
+        self.myBlockData['blockNum'] = self.myBlockData['blockNum'] + 1
         self.container1 = Frame(parent, width=1000, height=1000)
         self.container1.grid(column=0, row=0)
         self.blockLabel = Label(self.container1)
-        self.blockLabel.configure(text="Block #: 0")
+
+        self.blockLabel.configure(text=self.blockLabelText)
         self.blockLabel.grid(column=0, row=0)
         self.toChoice = Button(self.container1)
         self.toChoice.configure(text="Press to start block")

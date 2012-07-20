@@ -6,6 +6,7 @@ class Choice:
     def __init__(self, parent, blockData):
         self.myParent = parent
         self.myBlockData = blockData
+        self.numTrials = 10 #set this
         self.container1 = Frame(parent, width=1000, height=1000)
         self.container1.grid(column=0, row=0)
         self.choice1 = Button(self.container1)
