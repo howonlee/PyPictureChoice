@@ -10,7 +10,7 @@ headers = {"Content-type" : "application/x-www-form-urlencoded",
 connection = httplib.HTTPConnection("www.stanford.edu")
 connection.request("POST", "/group/pdplab/cgi-bin/mobileexpscript.php", params, headers)
 response = connection.getresponse()
-print "response status: " + response.status
+print "response status: " + str(response.status)
 print "response reason: " + response.reason
 data = response.read()
 expId = int(data)
@@ -19,13 +19,15 @@ connection.close()
 
 blockData = {'beginTime' : 0, 'endTime' : 0, 'breakBeginTime' : 0, 
             'breakEndTime' : 0, 'interrupted' : False, 'expId' : expId,
-            'blockNum' : 1}
+            'blockNum' : 0}
 
-print "block data: " + blockData
+print "block data: " + str(blockData)
 version = 1 #for version checking
 
 root = Tk()
 w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+root.rowconfigure(0, weight=1)
+root.columnconfigure(0, weight=1)
 root.overrideredirect(1)
 root.geometry("%dx%d+0+0" % (w, h))
 root.focus_set()
