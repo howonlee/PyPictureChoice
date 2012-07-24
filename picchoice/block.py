@@ -1,15 +1,15 @@
 from Tkinter import *
 from ttk import *
 import choice
-import time
+import misc
 
 class Block:
     def __init__(self, parent, blockData, pics):
         self.myParent = parent
         self.myBlockData = blockData
         self.myPics = pics
-        self.blockLabelText = "Block #: " + str(self.myBlockData['blockNum'])
-        self.myBlockData['blockNum'] = self.myBlockData['blockNum'] + 1
+        self.myBlockData['block_num'] = self.myBlockData['block_num'] + 1
+        self.blockLabelText = "Block #: " + str(self.myBlockData['block_num'])
         self.container1 = Frame(parent)
         self.container1.rowconfigure(0, weight=1)
         self.container1.columnconfigure(0, weight=1)
@@ -27,5 +27,5 @@ class Block:
         ''' toChoiceCallback
         pressed in block screen, goes to choice screen'''
         self.container1.grid_forget()
-        self.myBlockData['beginTime'] = int(time.time() * 1000)
+        self.myBlockData['time_begin'] = misc.getCurrTime()
         choiceinstance = choice.Choice(self.myParent, self.myBlockData, self.myPics, 0)

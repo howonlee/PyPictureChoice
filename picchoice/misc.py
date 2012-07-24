@@ -1,5 +1,5 @@
 #misc utilities
-import os, httplib, urllib, sys, random
+import os, httplib, urllib, sys, random, time
 import Image, ImageTk
 
 def getExpId():
@@ -23,7 +23,10 @@ def postData(datadict, urlbase, urlpath):
     headers = {"Content-type" : "application/x-www-form-urlencoded", "Accept": "text/plain"}
     connection = httplib.HTTPConnection(urlbase)
     connection.request("POST", urlpath, params, headers)
-    #no response needed, thankyouverramuch
+    #debugging follows
+    #response = connection.getresponse()
+    #print "response status: " + str(response.status)
+    #print "response reason: " + response.reason
     connection.close()
 
 def getpics():
@@ -35,8 +38,9 @@ def getpics():
     for f in range(len(animallist)):
         animalimage = Image.open(os.path.join('.\\animals', animallist[f]))
         noanimalimage = Image.open(os.path.join('.\\noanimals', noanimallist[f]))
-        pics.append((animalimage, noanimalimage))
+        pics.append((animalimage, noanimalimage, (f * 4) + 1))
     random.shuffle(pics)
     return pics
 
-
+def getCurrTime():
+    return int(time.time() * 1000)
