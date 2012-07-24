@@ -5,9 +5,10 @@ import Image, ImageTk
 import time
 
 class Choice:
-    def __init__(self, parent, blockData, trialNum):
+    def __init__(self, parent, blockData, pics, trialNum):
         self.myParent = parent
         self.myBlockData = blockData
+        self.myPics = pics
         self.thisTrial = trialNum
         self.numTrials = 4 
         self.visState = 0
@@ -25,9 +26,9 @@ class Choice:
     #choice screen is a state machine
 
     def cycleVis(self):
+        #pics have been shuffled already
         if (self.visState == 0):
-            self.imageFile = "./animal.jpg"
-            self.image1 = Image.open(self.imageFile)
+            self.image1 = self.myPics.pop()[0]
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
             self.picLabel.grid(column=0, row=0)
@@ -48,19 +49,16 @@ class Choice:
             self.visState = 0
 
     def choice1Callback(self, event):#eventually, we can just call choice again
-        if (self.thisTrial < self.numTrials):
-            self.container1.grid_forget()
-            self.myBlockData['endTime'] = int(time.time() * 1000)
-            another_trial = Choice(self.myParent, self.myBlockData, (self.thisTrial + 1))
-        else:
-            self.container1.grid_forget()
-            our_breakinstance = our_break.Break(self.myParent, self.myBlockData)
-
+        self.checkTrial()
+        
     def choice2Callback(self, event):
+        self.checkTrial()
+
+    def checkTrial(self):
         if (self.thisTrial < self.numTrials):
             self.container1.grid_forget()
             self.myBlockData['endTime'] = int(time.time() * 1000)
-            another_trial = Choice(self.myParent, self.myBlockData, (self.thisTrial + 1))
+            another_trial = Choice(self.myParent, self.myBlockData, self.myPics, (self.thisTrial + 1))
         else:
             self.container1.grid_forget()
-            our_breakinstance = our_break.Break(self.myParent, self.myBlockData)
+            our_breakinstance = our_break.Break(self.myParent, self.myBlockData, self.myPics)

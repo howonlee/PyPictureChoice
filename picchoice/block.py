@@ -4,9 +4,10 @@ import choice
 import time
 
 class Block:
-    def __init__(self, parent, blockData):
+    def __init__(self, parent, blockData, pics):
         self.myParent = parent
         self.myBlockData = blockData
+        self.myPics = pics
         self.blockLabelText = "Block #: " + str(self.myBlockData['blockNum'])
         self.myBlockData['blockNum'] = self.myBlockData['blockNum'] + 1
         self.container1 = Frame(parent)
@@ -27,4 +28,4 @@ class Block:
         pressed in block screen, goes to choice screen'''
         self.container1.grid_forget()
         self.myBlockData['beginTime'] = int(time.time() * 1000)
-        choiceinstance = choice.Choice(self.myParent, self.myBlockData, 0)
+        choiceinstance = choice.Choice(self.myParent, self.myBlockData, self.myPics, 0)

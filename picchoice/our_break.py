@@ -4,9 +4,10 @@ import block
 import time
 
 class Break:
-    def __init__(self, parent, blockData):
+    def __init__(self, parent, blockData, pics):
         self.myParent = parent
         self.myBlockData = blockData
+        self.myPics = pics
         self.myBlockData['breakBeginTime'] = int(time.time() * 1000)
         self.totalNumBlocks = 2
         self.container1 = Frame(parent)
@@ -28,7 +29,7 @@ class Break:
 
     def toBlockCallback(self, event):
         self.container1.grid_forget() 
-        blockinstance = block.Block(self.myParent, self.myBlockData)
+        blockinstance = block.Block(self.myParent, self.myBlockData, self.myPics)
 
     def exitCallback(self, event):
         self.myBlockData['breakEndTime'] = int(time.time() * 1000)

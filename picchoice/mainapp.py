@@ -3,9 +3,10 @@ from ttk import *
 import block
 
 class MainApp:
-    def __init__(self, parent, blockData):
+    def __init__(self, parent, blockData, pics):
         self.myParent = parent
         self.myBlockData = blockData
+        self.myPics = pics
         self.container1 = Frame(parent, width=10000, height=10000)
         self.container1.grid()
         self.mainLabel = Label(self.container1)
@@ -21,5 +22,5 @@ class MainApp:
         ''' toBlockClick
          pressed in main screen, goes to block screens '''
         self.container1.grid_forget()
-        blockinstance = block.Block(self.myParent, self.myBlockData)
+        blockinstance = block.Block(self.myParent, self.myBlockData, self.myPics)
  
