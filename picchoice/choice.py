@@ -16,12 +16,14 @@ class Choice:
         self.numTrials = 4 
         self.visState = 0
         self.container1 = Frame(parent)
+        self.container1.rowconfigure(1, minsize=self.myParent.winfo_screenheight())
         self.container1.grid()
         self.picLabel = Label(self.container1)
         self.choice1 = Button(self.container1)
         self.choice2 = Button(self.container1)
-        self.choice1.configure(text="Choice 1")
-        self.choice2.configure(text="Choice 2")
+        self.buttonwidth = self.myParent.winfo_screenwidth() / 16
+        self.choice1.configure(text="Yes", width=self.buttonwidth)#just a big num
+        self.choice2.configure(text="No", width=self.buttonwidth)
         self.choice1.bind("<Button-1>", self.choice1Callback)
         self.choice2.bind("<Button-1>", self.choice2Callback)
         self.cycleVis()
@@ -36,7 +38,7 @@ class Choice:
             self.currTrialData['pic_id'] = self.imageTuple[2]
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
-            self.picLabel.grid(column=0, row=0)
+            self.picLabel.grid(column=0, row=1)
             self.currTime = self.getNextTime()
             self.currTrialData['time_begin'] = misc.getCurrTime()
             self.currTrialData['pic_length'] = self.currTime
@@ -47,7 +49,7 @@ class Choice:
             self.image1 = Image.open(self.imageFile)
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
-            self.picLabel.grid(column=0, row=0)
+            self.picLabel.grid(column=0, row=1)
             self.currTrialData['mask_begin'] = misc.getCurrTime()
             self.myParent.after(500, self.cycleVis)
         elif (self.visState == 2):
