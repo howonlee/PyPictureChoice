@@ -10,23 +10,19 @@ class Break:
         self.myBlockData['break_time_begin'] = misc.getCurrTime()
         self.totalNumBlocks = 2
         self.container1 = Frame(parent)
-        self.screenheight = self.myParent.winfo_screenheight()
-        self.container1.rowconfigure(0, minsize = self.screenheight * 0.8)
-        self.container1.rowconfigure(1, minsize = self.screenheight * 0.2)
+        self.container1.rowconfigure(0, minsize = misc.getHeight(parent) * 0.8)
+        self.container1.rowconfigure(1, minsize = misc.getHeight(parent) * 0.2)
         self.container1.grid()
         self.breakLabel = Label(self.container1)
         self.breakLabel.grid(column=0, row=0)
-        self.buttonwidth = self.myParent.winfo_screenwidth() / 8
         if (self.myBlockData['block_num'] < self.totalNumBlocks):
             self.breakLabel.configure(text="Take a break")
-            self.toBlock = Button(self.container1)
-            self.toBlock.configure(text="Press to go to the next block", width=self.buttonwidth)
+            self.toBlock = Button(self.container1, text="Press to go to the next block", width=misc.getButtonWidth(parent))
             self.toBlock.bind("<Button-1>", self.toBlockCallback)
             self.toBlock.grid(column=0, row=1, sticky=(N, S, E, W))
         else:
             self.breakLabel.configure(text="OK, you're done.")
-            self.exitButton = Button(self.container1)
-            self.exitButton.configure(text="Press to exit the experiment", width=self.buttonwidth)
+            self.exitButton = Button(self.container1, text="Press to exit the experiment", width=misc.getButtonWidth(parent))
             self.exitButton.bind("<Button-1>", self.exitCallback)
             self.exitButton.grid(column=0, row=1, sticky=(N, S, E, W))
 
