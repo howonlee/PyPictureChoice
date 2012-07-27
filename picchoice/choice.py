@@ -16,14 +16,11 @@ class Choice:
         self.numTrials = 4 
         self.visState = 0
         self.container1 = Frame(parent)
-        self.container1.rowconfigure(1, minsize=self.myParent.winfo_screenheight())
+        self.container1.rowconfigure(1, minsize=misc.getHeight(parent))
         self.container1.grid()
         self.picLabel = Label(self.container1)
-        self.choice1 = Button(self.container1)
-        self.choice2 = Button(self.container1)
-        self.buttonwidth = self.myParent.winfo_screenwidth() / 16
-        self.choice1.configure(text="Yes", width=self.buttonwidth)#just a big num
-        self.choice2.configure(text="No", width=self.buttonwidth)
+        self.choice1 = Button(self.container1, text="Yes", width=misc.getButtonWidth(parent))
+        self.choice2 = Button(self.container1, text="No", width=misc.getButtonWidth(parent))
         self.choice1.bind("<Button-1>", self.choice1Callback)
         self.choice2.bind("<Button-1>", self.choice2Callback)
         self.cycleVis()

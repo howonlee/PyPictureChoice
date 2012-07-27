@@ -44,3 +44,12 @@ def getpics():
 
 def getCurrTime():
     return int(time.time() * 1000)
+
+def getWidth(root):
+    return root.winfo_screenwidth()
+
+def getButtonWidth(root):
+    return (root.winfo_screenwidth() / 8)
+ 
+def getHeight(root):
+    return root.winfo_screenheight()
