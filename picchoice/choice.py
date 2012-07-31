@@ -33,38 +33,45 @@ class Choice:
             self.imageTuple = self.myPics.pop()
             self.image1 = self.imageTuple[0]
             self.currTrialData['pic_id'] = self.imageTuple[2]
+            print self.currTrialData['pic_id']
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
             self.picLabel.grid(column=0, row=1)
-            self.currTime = self.getNextTime()
+            #self.currTime = self.getNextTime()
             self.currTrialData['time_begin'] = misc.getCurrTime()
-            self.currTrialData['pic_length'] = self.currTime
-            self.myParent.after(self.currTime, self.cycleVis)
+            self.currTrialData['pic_length'] = 200
+            self.myParent.after(200, self.cycleVis)
         elif (self.visState == 1):
             self.currTrialData['time_end'] = misc.getCurrTime()
             self.imageFile = "./checkerboard.jpg"
             self.image1 = Image.open(self.imageFile)
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
-            self.picLabel.grid(column=0, row=1)
             self.currTrialData['mask_begin'] = misc.getCurrTime()
-            self.myParent.after(500, self.cycleVis)
+            self.myParent.after(1000, self.cycleVis)
         elif (self.visState == 2):
-            self.picLabel.grid_forget()
             self.currTrialData['mask_end'] = misc.getCurrTime()
+            self.image2 = self.imageTuple[1]
+            self.photoimage2 = ImageTk.PhotoImage(self.image2)
+            self.picLabel.configure(image = self.photoimage2)
+            self.currTrialData['time2_begin'] = misc.getCurrTime() 
+            self.myParent.after(1000, self.cycleVis)
+        elif (self.visState == 3):
+            self.currTrialData['time2_end'] = misc.getCurrTime()
+            self.picLabel.grid_forget()
             self.choice1.grid(column=0, row=1, sticky=(N, W, S))
             self.choice2.grid(column=1, row=1, sticky=(N, E, S))
         self.visState += 1
-        if (self.visState > 2):
+        if (self.visState > 3):
             self.visState = 0
 
-    def getNextTime(self):
-        if not self.possibleTimes:
-            for i in range(5):
-                self.possibleTimes.append((i + 1) * 50)
-            random.shuffle(self.possibleTimes)
-        print str(self.possibleTimes)
-        return self.possibleTimes.pop()
+    #def getNextTime(self):
+        #if not self.possibleTimes:
+        #    for i in range(5):
+        #        self.possibleTimes.append((i + 1) * 50)
+        #    random.shuffle(self.possibleTimes)
+        #print str(self.possibleTimes)
+        #return self.possibleTimes.pop() 
 
     def choice1Callback(self, event):#eventually, we can just call choice again
         self.currTrialData["choice_made"] = 0

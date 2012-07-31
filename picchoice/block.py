@@ -9,13 +9,13 @@ class Block:
         self.myBlockData = blockData
         self.myPics = pics
         self.myBlockData['block_num'] = self.myBlockData['block_num'] + 1
-        self.blockLabelText = "Block #: " + str(self.myBlockData['block_num'])
-        self.container1 = Frame(parent)
+        self.blockLabelText = ("Block #: " + str(self.myBlockData['block_num']) + " of 2")
+        self.container1 = Frame(parent, style="Card.TFrame")
         self.container1.rowconfigure(0, minsize = misc.getHeight(parent) * 0.8)
         self.container1.rowconfigure(1, minsize = misc.getHeight(parent) * 0.2)
         self.container1.grid()
-        self.blockLabel = Label(self.container1, text=self.blockLabelText)
-        self.blockLabel.grid(column=0, row=0, sticky=(N, W))
+        self.blockLabel = Label(self.container1, text=self.blockLabelText, style="Card.TLabel")
+        self.blockLabel.grid(column=0, row=0)
         self.toChoice = Button(self.container1, text="Press to start block", width=misc.getButtonWidth(parent))
         self.toChoice.bind("<Button-1>", self.toChoiceCallback)
         self.toChoice.grid(column=0, row=1, sticky=(N, E, W, S))

@@ -9,11 +9,11 @@ class Break:
         self.myPics = pics
         self.myBlockData['break_time_begin'] = misc.getCurrTime()
         self.totalNumBlocks = 2
-        self.container1 = Frame(parent)
+        self.container1 = Frame(parent, style="Card.TFrame")
         self.container1.rowconfigure(0, minsize = misc.getHeight(parent) * 0.8)
         self.container1.rowconfigure(1, minsize = misc.getHeight(parent) * 0.2)
         self.container1.grid()
-        self.breakLabel = Label(self.container1)
+        self.breakLabel = Label(self.container1, style="Card.TLabel")
         self.breakLabel.grid(column=0, row=0)
         if (self.myBlockData['block_num'] < self.totalNumBlocks):
             self.breakLabel.configure(text="Take a break")

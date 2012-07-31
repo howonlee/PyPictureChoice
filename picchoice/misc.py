@@ -30,15 +30,15 @@ def postData(datadict, urlbase, urlpath):
     connection.close()
 
 def getpics():
-    animallist = os.listdir('.\\animals') #still has all sort of cruft in
-    animallist.sort()
-    noanimallist = os.listdir('.\\noanimals')
-    noanimallist.sort()#note that animallist and noanimallist must be equal lengths
+    firstlist = os.listdir('.\\first') #sthll has all sort of cruft in
+    firstlist.sort()
+    secondlist = os.listdir('.\\second')
+    secondlist.sort()#note that firstlist and secondlist must be equal lengths
     pics = []
-    for f in range(len(animallist)):
-        animalimage = Image.open(os.path.join('.\\animals', animallist[f]))
-        noanimalimage = Image.open(os.path.join('.\\noanimals', noanimallist[f]))
-        pics.append((animalimage, noanimalimage, (f * 4) + 1))
+    for f in range(len(firstlist)):
+        firstimage = Image.open(os.path.join('.\\first', firstlist[f]))
+        secondimage = Image.open(os.path.join('.\\second', secondlist[f]))
+        pics.append((firstimage, secondimage, (f * 4) + 219))
     random.shuffle(pics)
     return pics
 
@@ -49,7 +49,7 @@ def getWidth(root):
     return root.winfo_screenwidth()
 
 def getButtonWidth(root):
-    return (root.winfo_screenwidth() / 8)
+    return (root.winfo_screenwidth() / 22)
  
 def getHeight(root):
     return root.winfo_screenheight()
