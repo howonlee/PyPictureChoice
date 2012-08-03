@@ -38,7 +38,7 @@ def getpics():
     for f in range(len(firstlist)):
         firstimage = Image.open(os.path.join('.\\first', firstlist[f]))
         secondimage = Image.open(os.path.join('.\\second', secondlist[f]))
-        pics.append((firstimage, secondimage, (f * 4) + 219))
+        pics.append((firstimage, secondimage, firstlist[f]))
     random.shuffle(pics)
     return pics
 

@@ -21,7 +21,7 @@ class Break:
             self.toBlock.bind("<Button-1>", self.toBlockCallback)
             self.toBlock.grid(column=0, row=1, sticky=(N, S, E, W))
         else:
-            self.breakLabel.configure(text="OK, you're done.")
+            self.breakLabel.configure(text="OK, you're done.\n\nThe code for the Mechanical Turk HIT is 34ktkh2MM")
             self.exitButton = Button(self.container1, text="Press to exit the experiment", width=misc.getButtonWidth(parent))
             self.exitButton.bind("<Button-1>", self.exitCallback)
             self.exitButton.grid(column=0, row=1, sticky=(N, S, E, W))
