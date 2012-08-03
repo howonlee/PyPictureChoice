@@ -5,15 +5,23 @@ import Image, ImageTk
 import random
 
 class Choice:
-    def __init__(self, parent, blockData, pics, trialNum, possibleTimes=[]):
+    def __init__(self, parent, blockData, pics, trialNum, possibleTimes=[], picQueue = []):
         self.myParent = parent
         self.myBlockData = blockData
         self.currTrialData = {"exp_id" : self.myBlockData["exp_id"], "block_num" : self.myBlockData["block_num"]} #and then insert everything else afterwards
         self.currTrialData['pic_id'] = -1 #to catch mistakes
         self.myPics = pics
+        self.numTrials = 49 #it always does one more than this number
+                            #everything else works fine, so go with 49
+        self.numSixes = 18
+        self.numOthers = 7 
+        self.picqueue = []
+        if (not picQueue):
+            self.picqueue = self.formPicQueue(self.myPics)
+        else:
+            self.picqueue = picQueue
         self.possibleTimes = possibleTimes 
         self.thisTrial = trialNum
-        self.numTrials = 1
         self.visState = 0
         self.container1 = Frame(parent)
         self.container1.rowconfigure(1, minsize=misc.getHeight(parent))
@@ -38,7 +46,7 @@ class Choice:
             self.picLabel.grid(column=0, row=1)
             self.myParent.after(500, self.cycleVis)
         if (self.visState == 1):
-            self.imageTuple = self.myPics.pop()
+            self.imageTuple = self.picqueue.pop()
             self.image1 = self.imageTuple[0]
             self.currTrialData['pic_id'] = self.imageTuple[2]
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
@@ -100,7 +108,7 @@ class Choice:
     def checkTrial(self):
         if (self.thisTrial < self.numTrials):
             self.container1.grid_forget()
-            another_trial = Choice(self.myParent, self.myBlockData, self.myPics, (self.thisTrial + 1), self.possibleTimes)
+            another_trial = Choice(self.myParent, self.myBlockData, self.myPics, (self.thisTrial + 1), self.possibleTimes, self.picqueue)
         else:
             self.myBlockData['time_end'] = misc.getCurrTime() 
             self.container1.grid_forget()
@@ -115,3 +123,14 @@ class Choice:
         else:
             feedbackString = "Incorrect!"
         return feedbackString
+
+    def formPicQueue(self, pics):
+        picQueue = []
+        for i in range(self.numSixes): #18 is number of sixes
+            picQueue.append(pics[0].pop(0))
+            picQueue.append(pics[2].pop(0))
+        for i in range(self.numOthers):
+            picQueue.append(pics[1].pop(0))
+            picQueue.append(pics[3].pop(0))
+        random.shuffle(picQueue)
+        return picQueue

@@ -30,17 +30,26 @@ def postData(datadict, urlbase, urlpath):
     connection.close()
 
 def getpics():
-    firstlist = os.listdir('.\\first') #sthll has all sort of cruft in
-    firstlist.sort()
-    secondlist = os.listdir('.\\second')
-    secondlist.sort()#note that firstlist and secondlist must be equal lengths
     pics = []
-    for f in range(len(firstlist)):
-        firstimage = Image.open(os.path.join('.\\first', firstlist[f]))
-        secondimage = Image.open(os.path.join('.\\second', secondlist[f]))
-        pics.append((firstimage, secondimage, firstlist[f]))
-    random.shuffle(pics)
+    pics.append(getCat('.\\first\\changesixes','.\\second\\changesixes'))
+    pics.append(getCat('.\\first\\changeothers','.\\second\\changeothers'))
+    pics.append(getCat('.\\first\\nochangesixes','.\\second\\nochangesixes'))
+    pics.append(getCat('.\\first\\nochangeothers','.\\second\\nochangeothers'))
     return pics
+
+def getCat(firstdir, seconddir):
+    firstlist = os.listdir(firstdir)
+    firstlist.sort()
+    secondlist = os.listdir(seconddir)
+    secondlist.sort()
+    cat = []
+    for f in range(len(firstlist)):
+        firstimage = Image.open(os.path.join(firstdir, firstlist[f]))
+        secondimage = Image.open(os.path.join(seconddir, secondlist[f]))
+        cat.append((firstimage, secondimage, firstlist[f]))
+    random.shuffle(cat)
+    return cat 
+
 
 def getCurrTime():
     return int(time.time() * 1000)
