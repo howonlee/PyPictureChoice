@@ -39,50 +39,44 @@ class Choice:
     def cycleVis(self):
         #pics have been shuffled already
         if (self.visState == 0):
-            self.imageFile = "./fixation.png"
-            self.image1 = Image.open(self.imageFile)
-            self.photoimage1 = ImageTk.PhotoImage(self.image1)
-            self.picLabel.configure(image = self.photoimage1)
-            self.picLabel.grid(column=0, row=1)
-            self.myParent.after(500, self.cycleVis)
-        if (self.visState == 1):
             self.imageTuple = self.picqueue.pop()
             self.image1 = self.imageTuple[0]
             self.currTrialData['pic_id'] = self.imageTuple[2]
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
+            self.picLabel.grid(column=0, row=1)
             #self.currTime = self.getNextTime()
             self.currTrialData['time_begin'] = misc.getCurrTime()
             self.currTrialData['pic_length'] = 200
             self.myParent.after(200, self.cycleVis)
-        elif (self.visState == 2):
+        elif (self.visState == 1):
             self.currTrialData['time_end'] = misc.getCurrTime()
-            self.imageFile = "./checkerboard.jpg"
+            self.imageFile = "./blankscreen.jpg"
             self.image1 = Image.open(self.imageFile)
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
             self.currTrialData['mask_begin'] = misc.getCurrTime()
             self.myParent.after(1000, self.cycleVis)
-        elif (self.visState == 3):
+        elif (self.visState == 2):
             self.currTrialData['mask_end'] = misc.getCurrTime()
             self.image2 = self.imageTuple[1]
             self.photoimage2 = ImageTk.PhotoImage(self.image2)
             self.picLabel.configure(image = self.photoimage2)
             self.currTrialData['time2_begin'] = misc.getCurrTime() 
             self.myParent.after(1000, self.cycleVis)
-        elif (self.visState == 4):
+        elif (self.visState == 3):
             self.currTrialData['time2_end'] = misc.getCurrTime()
             self.picLabel.grid_forget()
             self.choice1.grid(column=0, row=1, sticky=(N, W, S))
             self.choice2.grid(column=1, row=1, sticky=(N, E, S))
-        elif (self.visState == 5):
+        elif (self.visState == 4):
             self.choice1.grid_forget()
             self.choice2.grid_forget()
             self.feedbackLabel.configure(text=self.getFeedback(self.currTrialData['choice_made'], self.currTrialData['pic_id']))
             self.feedbackLabel.grid(column=0, row=1)
             self.myParent.after(500, self.checkTrial)
         self.visState += 1
-        if (self.visState > 5):
+        if (self.visState > 4):
             self.visState = 0
 
     #def getNextTime(self):

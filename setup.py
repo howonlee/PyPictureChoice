@@ -1,4 +1,6 @@
 from distutils.core import setup
 import py2exe
 
-setup(console = ['runner.py'])
+includes = ['Tkinter']
+
+setup(windows=['picturechoice.py'], includes=includes)

@@ -15,7 +15,7 @@ class MainApp:
         self.container2 = Frame(self.container1, style="Card.TFrame")
         self.container2.configure(padding = (misc.getWidth(parent) * 0.12, misc.getHeight(parent) * 0.12, 0, 0))
         self.container2.grid()
-        self.mainLabel = Label(self.container2, text="Welcome to the experiment.\n\nYou will see a sequence of 50 pictures, broken into two blocks.\n\nAt the end of each picture, there will be a checkerboard mask.\n\nPress \"YES\" if there is an animal in the picture (People count as animals).\n\nPress \"NO\" if there is no animal in the picture.\n\nAfter you press the \"YES\" or \"NO\" button, the next picture will be displayed.\n\nEnter your Mechanical Turk ID below.", style='MainLabel.TLabel')
+        self.mainLabel = Label(self.container2, text="Welcome to the experiment.\nThis is a change detection task.\nYou will see two images presented one after another.\nIn each image, there will be several colored squares scattered over the entire image.\nSometimes one of the squares will change in color from the 1st image to the 2nd image.\nPress the YES button if there is such a change, and press the NO button if there is no change.\nYou will receive feedback on whether your judgement is correct or incorrect.\nAfter the feedback, the next trial will start.\nEnter your Mechanical Turk ID below.", style='MainLabel.TLabel')
         self.mainLabel.grid(column=0, row=0, sticky=(N, W, E))
         self.mTurkText = Entry(self.container1)
         self.mTurkText.grid(column = 0, row=1)
