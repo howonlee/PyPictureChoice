@@ -2,7 +2,7 @@ from Tkinter import *
 from ttk import *
 import our_break, misc
 import Image, ImageTk 
-import random
+import random, gc
 
 class Choice:
     def __init__(self, parent, blockData, pics, trialNum, possibleTimes=[], picQueue = []):
@@ -40,7 +40,7 @@ class Choice:
         #pics have been shuffled already
         if (self.visState == 0):
             self.imageTuple = self.picqueue.pop()
-            self.image1 = self.imageTuple[0]
+            self.image1 = Image.open(self.imageTuple[0])
             self.currTrialData['pic_id'] = self.imageTuple[2]
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
@@ -59,7 +59,7 @@ class Choice:
             self.myParent.after(1000, self.cycleVis)
         elif (self.visState == 2):
             self.currTrialData['mask_end'] = misc.getCurrTime()
-            self.image2 = self.imageTuple[1]
+            self.image2 = Image.open(self.imageTuple[1])
             self.photoimage2 = ImageTk.PhotoImage(self.image2)
             self.picLabel.configure(image = self.photoimage2)
             self.currTrialData['time2_begin'] = misc.getCurrTime() 
@@ -69,6 +69,7 @@ class Choice:
             self.picLabel.grid_forget()
             self.choice1.grid(column=0, row=1, sticky=(N, W, S))
             self.choice2.grid(column=1, row=1, sticky=(N, E, S))
+            gc.collect()
         elif (self.visState == 4):
             self.choice1.grid_forget()
             self.choice2.grid_forget()
@@ -102,7 +103,7 @@ class Choice:
     def checkTrial(self):
         if (self.thisTrial < self.numTrials):
             self.container1.grid_forget()
-            another_trial = Choice(self.myParent, self.myBlockData, self.myPics, (self.thisTrial + 1), self.possibleTimes, self.picqueue)
+            self.__init__(self.myParent, self.myBlockData, self.myPics, (self.thisTrial + 1), self.possibleTimes, self.picqueue)
         else:
             self.myBlockData['time_end'] = misc.getCurrTime() 
             self.container1.grid_forget()
