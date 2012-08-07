@@ -2,7 +2,7 @@ from Tkinter import *
 from ttk import *
 import our_break, misc
 import Image, ImageTk 
-import random, gc
+import random
 
 class Choice:
     def __init__(self, parent, blockData, pics, trialNum, possibleTimes=[], picQueue = []):
@@ -45,7 +45,7 @@ class Choice:
         #pics have been shuffled already
         if (self.visState == 0):
             self.imageTuple = self.picqueue.pop()
-            self.image1 = Image.open(self.imageTuple[0])
+            self.image1 = self.imageTuple[0]
             self.currTrialData['pic_id'] = self.imageTuple[2]
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
@@ -66,12 +66,17 @@ class Choice:
             self.myParent.bind("<space>", self.doNothing)
         elif (self.visState == 2):
             self.currTrialData['mask_end'] = misc.getCurrTime()
+<<<<<<< HEAD
             self.myParent.bind("<space>", self.doNothing)
             self.image2 = Image.open(self.imageTuple[1])
+=======
+            self.image2 = self.imageTuple[1]
+>>>>>>> parent of 7645310... fixed the same memory bug we had in android
             self.photoimage2 = ImageTk.PhotoImage(self.image2)
             self.picLabel.configure(image = self.photoimage2)
             self.currTrialData['time2_begin'] = misc.getCurrTime()
             self.currTrialData['time2_end'] = misc.getCurrTime()
+<<<<<<< HEAD
             self.myParent.bind("<KeyPress-z>", self.choice1Callback)
             self.myParent.bind("<KeyPress-/>", self.choice2Callback)
             self.currAfter = self.myParent.after(2000, self.cycleVis)
@@ -80,6 +85,12 @@ class Choice:
             self.picLabel.grid_forget()
             self.myParent.bind("<KeyPress-z>", self.doNothing)
             self.myParent.bind("<KeyPress-/>", self.doNothing)
+=======
+            self.picLabel.grid_forget()
+            self.choice1.grid(column=0, row=1, sticky=(N, W, S))
+            self.choice2.grid(column=1, row=1, sticky=(N, E, S))
+        elif (self.visState == 4):
+>>>>>>> parent of 7645310... fixed the same memory bug we had in android
             self.choice1.grid_forget()
             self.choice2.grid_forget()
             self.feedbackLabel.configure(text=self.getFeedback(self.currTrialData['choice_made'], self.currTrialData['pic_id']))
@@ -115,7 +126,7 @@ class Choice:
     def checkTrial(self):
         if (self.thisTrial < self.numTrials):
             self.container1.grid_forget()
-            self.__init__(self.myParent, self.myBlockData, self.myPics, (self.thisTrial + 1), self.possibleTimes, self.picqueue)
+            another_trial = Choice(self.myParent, self.myBlockData, self.myPics, (self.thisTrial + 1), self.possibleTimes, self.picqueue)
         else:
             self.myBlockData['time_end'] = misc.getCurrTime() 
             self.container1.grid_forget()

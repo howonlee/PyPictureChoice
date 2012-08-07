@@ -44,8 +44,8 @@ def getCat(firstdir, seconddir):
     secondlist.sort()
     cat = []
     for f in range(len(firstlist)):
-        firstimage = os.path.join(firstdir, firstlist[f])
-        secondimage = os.path.join(seconddir, secondlist[f])
+        firstimage = Image.open(os.path.join(firstdir, firstlist[f]))
+        secondimage = Image.open(os.path.join(seconddir, secondlist[f]))
         cat.append((firstimage, secondimage, firstlist[f]))
     random.shuffle(cat)
     return cat 
