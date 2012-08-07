@@ -53,7 +53,6 @@ class Choice:
             #self.currTime = self.getNextTime()
             self.currTrialData['time_begin'] = misc.getCurrTime()
             self.currTrialData['pic_length'] = 200
-            self.myParent.bind("<space>", self.cycleVis)
             self.currAfter = self.myParent.after(2000, self.cycleVis)
         elif (self.visState == 1):
             self.currTrialData['time_end'] = misc.getCurrTime()
@@ -63,45 +62,27 @@ class Choice:
             self.picLabel.configure(image = self.photoimage1)
             self.currTrialData['mask_begin'] = misc.getCurrTime()
             self.currAfter = self.myParent.after(1000, self.cycleVis)
-            self.myParent.bind("<space>", self.doNothing)
         elif (self.visState == 2):
             self.currTrialData['mask_end'] = misc.getCurrTime()
-<<<<<<< HEAD
-<<<<<<< HEAD
-            self.myParent.bind("<space>", self.doNothing)
-            self.image2 = Image.open(self.imageTuple[1])
-=======
             self.image2 = self.imageTuple[1]
->>>>>>> parent of 7645310... fixed the same memory bug we had in android
-=======
-            self.image2 = self.imageTuple[1]
->>>>>>> parent of 7645310... fixed the same memory bug we had in android
             self.photoimage2 = ImageTk.PhotoImage(self.image2)
             self.picLabel.configure(image = self.photoimage2)
             self.currTrialData['time2_begin'] = misc.getCurrTime()
             self.currTrialData['time2_end'] = misc.getCurrTime()
-<<<<<<< HEAD
-            self.myParent.bind("<KeyPress-z>", self.choice1Callback)
-            self.myParent.bind("<KeyPress-/>", self.choice2Callback)
             self.currAfter = self.myParent.after(2000, self.cycleVis)
             gc.collect()
         elif (self.visState == 3):
             self.picLabel.grid_forget()
-            self.myParent.bind("<KeyPress-z>", self.doNothing)
-            self.myParent.bind("<KeyPress-/>", self.doNothing)
-=======
-            self.picLabel.grid_forget()
             self.choice1.grid(column=0, row=1, sticky=(N, W, S))
             self.choice2.grid(column=1, row=1, sticky=(N, E, S))
         elif (self.visState == 4):
->>>>>>> parent of 7645310... fixed the same memory bug we had in android
             self.choice1.grid_forget()
             self.choice2.grid_forget()
             self.feedbackLabel.configure(text=self.getFeedback(self.currTrialData['choice_made'], self.currTrialData['pic_id']))
             self.feedbackLabel.grid(column=0, row=1)
             self.currAfter = self.myParent.after(500, self.checkTrial)
         self.visState += 1
-        if (self.visState > 3):
+        if (self.visState > 4):
             self.visState = 0
 
     def doNothing(self, event):
