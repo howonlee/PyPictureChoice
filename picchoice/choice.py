@@ -30,8 +30,6 @@ class Choice:
         self.feedbackLabel = Label(self.container1, style="Inversed.TLabel")
         self.choice1 = Button(self.container1, text="Yes", width=misc.getButtonWidth(parent) / 2)
         self.choice2 = Button(self.container1, text="No", width=misc.getButtonWidth(parent) / 2)
-        self.choice1.bind("<Button-1>", self.choice1Callback)
-        self.choice2.bind("<Button-1>", self.choice2Callback)
         self.cycleVis()
 
     #choice screen is a state machine
@@ -69,8 +67,12 @@ class Choice:
             self.picLabel.grid_forget()
             self.choice1.grid(column=0, row=1, sticky=(N, W, S))
             self.choice2.grid(column=1, row=1, sticky=(N, E, S))
+            self.myParent.bind("<KeyPress-z>", self.choice1Callback)
+            self.myParent.bind("<KeyPress-/>", self.choice2Callback)
             gc.collect()
         elif (self.visState == 4):
+            self.myParent.bind("<KeyPress-z>", self.doNothing)
+            self.myParent.bind("<KeyPress-/>", self.doNothing)
             self.choice1.grid_forget()
             self.choice2.grid_forget()
             self.feedbackLabel.configure(text=self.getFeedback(self.currTrialData['choice_made'], self.currTrialData['pic_id']))
@@ -79,6 +81,9 @@ class Choice:
         self.visState += 1
         if (self.visState > 4):
             self.visState = 0
+
+    def doNothing(self, event):
+        pass
 
     #def getNextTime(self):
         #if not self.possibleTimes:
