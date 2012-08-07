@@ -67,8 +67,12 @@ class Choice:
         elif (self.visState == 2):
             self.currTrialData['mask_end'] = misc.getCurrTime()
 <<<<<<< HEAD
+<<<<<<< HEAD
             self.myParent.bind("<space>", self.doNothing)
             self.image2 = Image.open(self.imageTuple[1])
+=======
+            self.image2 = self.imageTuple[1]
+>>>>>>> parent of 7645310... fixed the same memory bug we had in android
 =======
             self.image2 = self.imageTuple[1]
 >>>>>>> parent of 7645310... fixed the same memory bug we had in android
