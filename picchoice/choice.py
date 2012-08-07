@@ -41,9 +41,9 @@ class Choice:
             self.myParent.after_cancel(self.currAfter)
 
         #default choice made
-        self.currTrialData['choice_made'] = 0
         #pics have been shuffled already
         if (self.visState == 0):
+            self.currTrialData['choice_made'] = 0
             self.imageTuple = self.picqueue.pop()
             self.image1 = Image.open(self.imageTuple[0])
             self.currTrialData['pic_id'] = self.imageTuple[2]
@@ -54,7 +54,7 @@ class Choice:
             self.currTrialData['time_begin'] = misc.getCurrTime()
             self.currTrialData['pic_length'] = 200
             self.myParent.bind("<space>", self.cycleVis)
-            self.currAfter = self.myParent.after(2000, self.cycleVis)
+            self.currAfter = self.myParent.after(20000, self.cycleVis)
         elif (self.visState == 1):
             self.currTrialData['time_end'] = misc.getCurrTime()
             self.imageFile = "./blankscreen.jpg"
@@ -72,14 +72,14 @@ class Choice:
             self.picLabel.configure(image = self.photoimage2)
             self.currTrialData['time2_begin'] = misc.getCurrTime()
             self.currTrialData['time2_end'] = misc.getCurrTime()
-            self.myParent.bind("<KeyPress-z>", self.choice1Callback)
-            self.myParent.bind("<KeyPress-/>", self.choice2Callback)
-            self.currAfter = self.myParent.after(2000, self.cycleVis)
+            self.myParent.bind("<Control_L>", self.choice1Callback)
+            self.myParent.bind("<Control_R>", self.choice2Callback)
+            self.currAfter = self.myParent.after(20000, self.cycleVis)
             gc.collect()
         elif (self.visState == 3):
             self.picLabel.grid_forget()
-            self.myParent.bind("<KeyPress-z>", self.doNothing)
-            self.myParent.bind("<KeyPress-/>", self.doNothing)
+            self.myParent.bind("<Control_L>", self.doNothing)
+            self.myParent.bind("<Control_R>", self.doNothing)
             self.choice1.grid_forget()
             self.choice2.grid_forget()
             self.feedbackLabel.configure(text=self.getFeedback(self.currTrialData['choice_made'], self.currTrialData['pic_id']))
