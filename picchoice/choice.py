@@ -2,7 +2,7 @@ from Tkinter import *
 from ttk import *
 import our_break, misc
 import Image, ImageTk 
-import random
+import random, gc
 
 class Choice:
     def __init__(self, parent, blockData, pics, trialNum, possibleTimes=[], picQueue = []):
@@ -31,6 +31,8 @@ class Choice:
         self.feedbackLabel = Label(self.container1, style="Inversed.TLabel")
         self.choice1 = Button(self.container1, text="Yes", width=misc.getButtonWidth(parent) / 2)
         self.choice2 = Button(self.container1, text="No", width=misc.getButtonWidth(parent) / 2)
+        self.choice1.bind("<Button-1>", self.choice1Callback)
+        self.choice2.bind("<Button-1>", self.choice2Callback)
         self.cycleVis()
 
     #choice screen is a state machine
@@ -40,12 +42,10 @@ class Choice:
         if (self.currAfter):
             self.myParent.after_cancel(self.currAfter)
 
-        #default choice made
-        self.currTrialData['choice_made'] = 0
         #pics have been shuffled already
         if (self.visState == 0):
             self.imageTuple = self.picqueue.pop()
-            self.image1 = self.imageTuple[0]
+            self.image1 = Image.open(self.imageTuple[0])
             self.currTrialData['pic_id'] = self.imageTuple[2]
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
@@ -53,7 +53,7 @@ class Choice:
             #self.currTime = self.getNextTime()
             self.currTrialData['time_begin'] = misc.getCurrTime()
             self.currTrialData['pic_length'] = 200
-            self.currAfter = self.myParent.after(2000, self.cycleVis)
+            self.currAfter = self.myParent.after(200, self.cycleVis)
         elif (self.visState == 1):
             self.currTrialData['time_end'] = misc.getCurrTime()
             self.imageFile = "./blankscreen.jpg"
@@ -64,15 +64,15 @@ class Choice:
             self.currAfter = self.myParent.after(1000, self.cycleVis)
         elif (self.visState == 2):
             self.currTrialData['mask_end'] = misc.getCurrTime()
-            self.image2 = self.imageTuple[1]
+            self.image2 = Image.open(self.imageTuple[1])
             self.photoimage2 = ImageTk.PhotoImage(self.image2)
             self.picLabel.configure(image = self.photoimage2)
             self.currTrialData['time2_begin'] = misc.getCurrTime()
-            self.currTrialData['time2_end'] = misc.getCurrTime()
-            self.currAfter = self.myParent.after(2000, self.cycleVis)
+            self.currAfter = self.myParent.after(1000, self.cycleVis)
             gc.collect()
         elif (self.visState == 3):
             self.picLabel.grid_forget()
+            self.currTrialData['time2_end'] = misc.getCurrTime()
             self.choice1.grid(column=0, row=1, sticky=(N, W, S))
             self.choice2.grid(column=1, row=1, sticky=(N, E, S))
         elif (self.visState == 4):
@@ -111,7 +111,7 @@ class Choice:
     def checkTrial(self):
         if (self.thisTrial < self.numTrials):
             self.container1.grid_forget()
-            another_trial = Choice(self.myParent, self.myBlockData, self.myPics, (self.thisTrial + 1), self.possibleTimes, self.picqueue)
+            self.__init__(self.myParent, self.myBlockData, self.myPics, (self.thisTrial + 1), self.possibleTimes, self.picqueue)
         else:
             self.myBlockData['time_end'] = misc.getCurrTime() 
             self.container1.grid_forget()
@@ -123,8 +123,6 @@ class Choice:
             feedbackString = "Correct!"
         elif (choice == -1 and not "c" in currPicId):
             feedbackString = "Correct!"
-        elif (choice == 0):
-            feedbackString = "Too late!"
         else:
             feedbackString = "Incorrect!"
         return feedbackString
