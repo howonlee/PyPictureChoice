@@ -31,6 +31,8 @@ class Choice:
         self.feedbackLabel = Label(self.container1, style="Inversed.TLabel")
         self.choice1 = Button(self.container1, text="Yes", width=misc.getButtonWidth(parent) / 2)
         self.choice2 = Button(self.container1, text="No", width=misc.getButtonWidth(parent) / 2)
+        self.leftLabel = Label(self.myParent, text="Yes", style="Inversed.TLabel")
+        self.rightLabel = Label(self.myParent, text="No ", style="Inversed.TLabel")
         self.cycleVis()
 
     #choice screen is a state machine
@@ -49,12 +51,12 @@ class Choice:
             self.currTrialData['pic_id'] = self.imageTuple[2]
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
-            self.picLabel.grid(column=0, row=1)
+            self.picLabel.grid(column=1, row=1)
             #self.currTime = self.getNextTime()
             self.currTrialData['time_begin'] = misc.getCurrTime()
             self.currTrialData['pic_length'] = 200
             self.myParent.bind("<space>", self.cycleVis)
-            self.currAfter = self.myParent.after(20000, self.cycleVis)
+            self.currAfter = self.myParent.after(2000000, self.cycleVis)
         elif (self.visState == 1):
             self.currTrialData['time_end'] = misc.getCurrTime()
             self.imageFile = "./blankscreen.jpg"
@@ -71,19 +73,23 @@ class Choice:
             self.photoimage2 = ImageTk.PhotoImage(self.image2)
             self.picLabel.configure(image = self.photoimage2)
             self.currTrialData['time2_begin'] = misc.getCurrTime()
-            self.currTrialData['time2_end'] = misc.getCurrTime()
             self.myParent.bind("<Control_L>", self.choice1Callback)
             self.myParent.bind("<Control_R>", self.choice2Callback)
-            self.currAfter = self.myParent.after(20000, self.cycleVis)
+            self.leftLabel.place(anchor=NW)
+            self.rightLabel.place(relx=1, x=-2, y=2, anchor=NE)
+            self.currAfter = self.myParent.after(2000000, self.cycleVis)
             gc.collect()
         elif (self.visState == 3):
             self.picLabel.grid_forget()
+            self.currTrialData['time2_end'] = misc.getCurrTime()
             self.myParent.bind("<Control_L>", self.doNothing)
             self.myParent.bind("<Control_R>", self.doNothing)
-            self.choice1.grid_forget()
-            self.choice2.grid_forget()
+            self.leftLabel.place_forget()
+            self.rightLabel.place_forget()
+            #self.choice1.grid_forget()
+            #self.choice2.grid_forget()
             self.feedbackLabel.configure(text=self.getFeedback(self.currTrialData['choice_made'], self.currTrialData['pic_id']))
-            self.feedbackLabel.grid(column=0, row=1)
+            self.feedbackLabel.grid(column=1, row=1)
             self.currAfter = self.myParent.after(500, self.checkTrial)
         self.visState += 1
         if (self.visState > 3):
