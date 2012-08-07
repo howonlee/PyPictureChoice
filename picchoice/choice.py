@@ -23,6 +23,7 @@ class Choice:
         self.possibleTimes = possibleTimes 
         self.thisTrial = trialNum
         self.visState = 0
+        self.currAfter = None
         self.container1 = Frame(parent)
         self.container1.rowconfigure(1, minsize=misc.getHeight(parent))
         self.container1.grid()
@@ -34,7 +35,13 @@ class Choice:
 
     #choice screen is a state machine
 
-    def cycleVis(self):
+    def cycleVis(self, event=None):
+        #kill extraneous after stuff, in case of keyboard interrupt
+        if (self.currAfter):
+            self.myParent.after_cancel(self.currAfter)
+
+        #default choice made
+        self.currTrialData['choice_made'] = 0
         #pics have been shuffled already
         if (self.visState == 0):
             self.imageTuple = self.picqueue.pop()
@@ -46,7 +53,8 @@ class Choice:
             #self.currTime = self.getNextTime()
             self.currTrialData['time_begin'] = misc.getCurrTime()
             self.currTrialData['pic_length'] = 200
-            self.myParent.after(200, self.cycleVis)
+            self.myParent.bind("<space>", self.cycleVis)
+            self.currAfter = self.myParent.after(2000, self.cycleVis)
         elif (self.visState == 1):
             self.currTrialData['time_end'] = misc.getCurrTime()
             self.imageFile = "./blankscreen.jpg"
@@ -54,32 +62,31 @@ class Choice:
             self.photoimage1 = ImageTk.PhotoImage(self.image1)
             self.picLabel.configure(image = self.photoimage1)
             self.currTrialData['mask_begin'] = misc.getCurrTime()
-            self.myParent.after(1000, self.cycleVis)
+            self.currAfter = self.myParent.after(1000, self.cycleVis)
+            self.myParent.bind("<space>", self.doNothing)
         elif (self.visState == 2):
             self.currTrialData['mask_end'] = misc.getCurrTime()
+            self.myParent.bind("<space>", self.doNothing)
             self.image2 = Image.open(self.imageTuple[1])
             self.photoimage2 = ImageTk.PhotoImage(self.image2)
             self.picLabel.configure(image = self.photoimage2)
-            self.currTrialData['time2_begin'] = misc.getCurrTime() 
-            self.myParent.after(1000, self.cycleVis)
-        elif (self.visState == 3):
+            self.currTrialData['time2_begin'] = misc.getCurrTime()
             self.currTrialData['time2_end'] = misc.getCurrTime()
-            self.picLabel.grid_forget()
-            self.choice1.grid(column=0, row=1, sticky=(N, W, S))
-            self.choice2.grid(column=1, row=1, sticky=(N, E, S))
             self.myParent.bind("<KeyPress-z>", self.choice1Callback)
             self.myParent.bind("<KeyPress-/>", self.choice2Callback)
+            self.currAfter = self.myParent.after(2000, self.cycleVis)
             gc.collect()
-        elif (self.visState == 4):
+        elif (self.visState == 3):
+            self.picLabel.grid_forget()
             self.myParent.bind("<KeyPress-z>", self.doNothing)
             self.myParent.bind("<KeyPress-/>", self.doNothing)
             self.choice1.grid_forget()
             self.choice2.grid_forget()
             self.feedbackLabel.configure(text=self.getFeedback(self.currTrialData['choice_made'], self.currTrialData['pic_id']))
             self.feedbackLabel.grid(column=0, row=1)
-            self.myParent.after(500, self.checkTrial)
+            self.currAfter = self.myParent.after(500, self.checkTrial)
         self.visState += 1
-        if (self.visState > 4):
+        if (self.visState > 3):
             self.visState = 0
 
     def doNothing(self, event):
@@ -120,6 +127,8 @@ class Choice:
             feedbackString = "Correct!"
         elif (choice == -1 and not "c" in currPicId):
             feedbackString = "Correct!"
+        elif (choice == 0):
+            feedbackString = "Too late!"
         else:
             feedbackString = "Incorrect!"
         return feedbackString
