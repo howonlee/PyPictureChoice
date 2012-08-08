@@ -54,7 +54,7 @@ class Choice:
             self.picLabel.grid(column=1, row=1)
             #self.currTime = self.getNextTime()
             self.currTrialData['time_begin'] = misc.getCurrTime()
-            self.currTrialData['pic_length'] = 200
+            self.currTrialData['pic_length'] = 2000000
             self.myParent.bind("<space>", self.cycleVis)
             self.currAfter = self.myParent.after(2000000, self.cycleVis)
         elif (self.visState == 1):

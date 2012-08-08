@@ -13,6 +13,7 @@ class Break:
         self.container1.rowconfigure(0, minsize = misc.getHeight(parent) * 0.8)
         self.container1.rowconfigure(1, minsize = misc.getHeight(parent) * 0.2)
         self.container1.grid()
+        self.myCode = ""
         self.breakLabel = Label(self.container1, style="Card.TLabel")
         self.breakLabel.grid(column=0, row=0)
         if (self.myBlockData['block_num'] < self.totalNumBlocks):
@@ -21,7 +22,8 @@ class Break:
             self.toBlock.bind("<Button-1>", self.toBlockCallback)
             self.toBlock.grid(column=0, row=1, sticky=(N, S, E, W))
         else:
-            self.breakLabel.configure(text="OK, you're done.\n\nThe code for the Mechanical Turk HIT is 34ktkh2MM")
+            self.myCode = misc.genCode()
+            self.breakLabel.configure(text="OK, you're done.\n\nThe code for the Mechanical Turk HIT is " + self.myCode)
             self.exitButton = Button(self.container1, text="Press to exit the experiment", width=misc.getButtonWidth(parent))
             self.exitButton.bind("<Button-1>", self.exitCallback)
             self.exitButton.grid(column=0, row=1, sticky=(N, S, E, W))
@@ -35,6 +37,6 @@ class Break:
     def exitCallback(self, event):
         self.myBlockData['break_time_end'] = misc.getCurrTime()
         misc.postData(self.myBlockData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobileblockscript.php")
-        misc.postData({'exp_id' : self.myBlockData['exp_id']}, "www.stanford.edu", "/group/pdplab/cgi-bin/expend.php")
+        misc.postData({'exp_id' : self.myBlockData['exp_id'], 'exp_code' : self.myCode}, "www.stanford.edu", "/group/pdplab/cgi-bin/expend.php")
         print str(self.myBlockData)
         self.myParent.quit()
