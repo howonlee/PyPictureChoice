@@ -1,5 +1,5 @@
 #misc utilities
-import os, httplib, urllib, sys, random, time
+import os, httplib, urllib, sys, random, time, string
 import Image, ImageTk
 
 def getExpId():
@@ -50,6 +50,10 @@ def getCat(firstdir, seconddir):
     random.shuffle(cat)
     return cat 
 
+def getCode():
+    chars = string.ascii_uppercase + string.digits
+    code = ""
+    return code.join(random.choice(chars) for x in range(6))
 
 def getCurrTime():
     return int(time.time() * 1000)
