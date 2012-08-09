@@ -54,11 +54,11 @@ class Choice:
             self.picLabel.grid(column=1, row=1)
             #self.currTime = self.getNextTime()
             self.currTrialData['time_begin'] = misc.getCurrTime()
-            self.currTrialData['pic_length'] = 2000000
-            self.myParent.bind("<space>", self.cycleVis)
-            self.currAfter = self.myParent.after(2000000, self.cycleVis)
+            self.currTrialData['pic_length'] = 500
+            #self.myParent.bind("<space>", self.cycleVis)
+            self.currAfter = self.myParent.after(500, self.cycleVis)
         elif (self.visState == 1):
-            self.currTrialData['time_pic_click'] = misc.getCurrTime()
+            #self.currTrialData['time_pic_click'] = misc.getCurrTime()
             self.currTrialData['time_end'] = misc.getCurrTime()
             self.imageFile = "./blankscreen.jpg"
             self.image1 = Image.open(self.imageFile)
@@ -66,7 +66,7 @@ class Choice:
             self.picLabel.configure(image = self.photoimage1)
             self.currTrialData['mask_begin'] = misc.getCurrTime()
             self.currAfter = self.myParent.after(1000, self.cycleVis)
-            self.myParent.bind("<space>", self.doNothing)
+            #self.myParent.bind("<space>", self.doNothing)
         elif (self.visState == 2):
             self.currTrialData['mask_end'] = misc.getCurrTime()
             self.myParent.bind("<space>", self.doNothing)
