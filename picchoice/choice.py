@@ -58,6 +58,7 @@ class Choice:
             self.myParent.bind("<space>", self.cycleVis)
             self.currAfter = self.myParent.after(2000000, self.cycleVis)
         elif (self.visState == 1):
+            self.currTrialData['time_pic_click'] = misc.getCurrTime()
             self.currTrialData['time_end'] = misc.getCurrTime()
             self.imageFile = "./blankscreen.jpg"
             self.image1 = Image.open(self.imageFile)
@@ -75,8 +76,8 @@ class Choice:
             self.currTrialData['time2_begin'] = misc.getCurrTime()
             self.myParent.bind("<Control_L>", self.choice1Callback)
             self.myParent.bind("<Control_R>", self.choice2Callback)
-            self.leftLabel.place(anchor=NW)
-            self.rightLabel.place(relx=1, x=-2, y=2, anchor=NE)
+            self.leftLabel.place(anchor=SW, rely=1, y=-2)
+            self.rightLabel.place(anchor=SE, relx=1, rely=1, x=-2, y=-2)
             self.currAfter = self.myParent.after(2000000, self.cycleVis)
             gc.collect()
         elif (self.visState == 3):
