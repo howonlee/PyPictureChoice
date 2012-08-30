@@ -110,13 +110,13 @@ class Choice:
     def choice1Callback(self, event):#eventually, we can just call choice again
         self.currTrialData["choice_made"] = 1
         self.currTrialData['time_click'] = misc.getCurrTime()
-        misc.postData(self.currTrialData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobiletrialscript.php", "trial.txt")
+        misc.postData(self.currTrialData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobiletrialscript.php", self.myBlockData["name"] + "_trial.txt")
         self.cycleVis()
 
     def choice2Callback(self, event):
         self.currTrialData["choice_made"] = -1
         self.currTrialData['time_click'] = misc.getCurrTime()
-        misc.postData(self.currTrialData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobiletrialscript.php", "trial.txt")
+        misc.postData(self.currTrialData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobiletrialscript.php", self.myBlockData["name"] + "_trial.txt")
         self.cycleVis()
 
     def checkTrial(self):
@@ -132,12 +132,14 @@ class Choice:
         feedbackString = ""
         if (choice == 1 and "c" in currPicId):
             feedbackString = "Correct!"
+            self.myBlockData["numcorrect"] += 1
         elif (choice == -1 and not "c" in currPicId):
             feedbackString = "Correct!"
+            self.myBlockData["numcorrect"] += 1
         elif (choice == 0):
             feedbackString = "Too late!"
         else:
-            feedbackString = "Incorrect!"
+            feedbackString = "Wrong!"
         return feedbackString
 
     def formPicQueue(self, pics):

@@ -22,21 +22,20 @@ class Break:
             self.toBlock.bind("<Button-1>", self.toBlockCallback)
             self.toBlock.grid(column=0, row=1, sticky=(N, S, E, W))
         else:
-            self.myCode = misc.genCode()
-            self.breakLabel.configure(text="OK, you're done.\n\nThe code for the Mechanical Turk HIT is " + self.myCode)
+            self.breakLabel.configure(text="OK, you're done.\n\nYour score is " + str(self.myBlockData['numcorrect']) + "\n\nPlease press the exit button and inform the experimenter.")
             self.exitButton = Button(self.container1, text="Press to exit the experiment", width=misc.getButtonWidth(parent))
             self.exitButton.bind("<Button-1>", self.exitCallback)
             self.exitButton.grid(column=0, row=1, sticky=(N, S, E, W))
 
     def toBlockCallback(self, event):
         self.myBlockData['break_time_end'] = misc.getCurrTime()
-        misc.postData(self.myBlockData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobileblockscript.php", "blocks.txt")
+        misc.postData(self.myBlockData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobileblockscript.php", self.myBlockData["name"] + "_blocks.txt")
         self.container1.grid_forget()
         blockinstance = block.Block(self.myParent, self.myBlockData, self.myPics)
 
     def exitCallback(self, event):
         self.myBlockData['break_time_end'] = misc.getCurrTime()
-        misc.postData(self.myBlockData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobileblockscript.php", "blocks.txt")
-        misc.postData({'exp_id' : self.myBlockData['exp_id'], 'exp_code' : self.myCode}, "www.stanford.edu", "/group/pdplab/cgi-bin/expend.php", "expend.txt")
+        misc.postData(self.myBlockData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobileblockscript.php", self.myBlockData["name"] + "_blocks.txt")
+        misc.postData({'exp_id' : self.myBlockData['exp_id'], 'exp_code' : self.myCode, 'numcorrect' : self.myBlockData['numcorrect']}, "www.stanford.edu", "/group/pdplab/cgi-bin/expend.php", self.myBlockData["name"] + "_expend.txt")
         print str(self.myBlockData)
         self.myParent.quit()

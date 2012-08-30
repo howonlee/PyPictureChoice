@@ -14,8 +14,8 @@ def getExpId():
     print "response reason: " + response.reason
     data = response.read()
     expId = int(data)
-    return expId
     connection.close()
+    return expId
 
 def postData(datadict, urlbase, urlpath, filename):
     #certainly more boilerplaty than the above, but it get repeated a lot
@@ -24,7 +24,9 @@ def postData(datadict, urlbase, urlpath, filename):
     connection = httplib.HTTPConnection(urlbase)
     connection.request("POST", urlpath, params, headers)
     #we are also storing data locally
-    f = open(filename, "a")
+    if not os.path.exists("./data"):
+        os.makedirs("./data")
+    f = open("./data/" + filename, "a")
     f.write(str(datadict))
     f.write("\n")
     f.close()
@@ -55,6 +57,7 @@ def getCat(firstdir, seconddir):
     random.shuffle(cat)
     return cat
 
+#unused
 def genCode():
     chars = string.ascii_uppercase + string.digits
     code = ""

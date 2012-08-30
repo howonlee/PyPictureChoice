@@ -8,7 +8,7 @@ import httplib, urllib, os, sys
 expId = picchoice.misc.getExpId()
 blockData = {'time_begin' : 0, 'time_end' : 0, 'break_time_begin' : 0,
             'break_time_end' : 0, 'interruption' : False, 'exp_id' : expId,
-            'block_num' : 0}
+            'block_num' : 0, 'name' : "", 'numcorrect' : 0}#name and numcorrect goes unused when posting
 pics = picchoice.misc.getpics()
 
 version = 1 #for version checking, later
