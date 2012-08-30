@@ -17,12 +17,17 @@ def getExpId():
     return expId
     connection.close()
 
-def postData(datadict, urlbase, urlpath):
+def postData(datadict, urlbase, urlpath, filename):
     #certainly more boilerplaty than the above, but it get repeated a lot
     params = urllib.urlencode(datadict)
     headers = {"Content-type" : "application/x-www-form-urlencoded", "Accept": "text/plain"}
     connection = httplib.HTTPConnection(urlbase)
     connection.request("POST", urlpath, params, headers)
+    #we are also storing data locally
+    f = open(filename, "a")
+    f.write(str(datadict))
+    f.write("\n")
+    f.close()
     #debugging follows
     #response = connection.getresponse()
     #print "response status: " + str(response.status)
@@ -48,7 +53,7 @@ def getCat(firstdir, seconddir):
         secondimage = os.path.join(seconddir, secondlist[f])
         cat.append((firstimage, secondimage, firstlist[f]))
     random.shuffle(cat)
-    return cat 
+    return cat
 
 def genCode():
     chars = string.ascii_uppercase + string.digits
@@ -63,6 +68,6 @@ def getWidth(root):
 
 def getButtonWidth(root):
     return (root.winfo_screenwidth() / 22)
- 
+
 def getHeight(root):
     return root.winfo_screenheight()

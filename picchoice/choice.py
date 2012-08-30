@@ -1,7 +1,7 @@
 from Tkinter import *
 from ttk import *
 import our_break, misc
-import Image, ImageTk 
+import Image, ImageTk
 import random, gc
 
 class Choice:
@@ -14,13 +14,13 @@ class Choice:
         self.numTrials = 49 #it always does one more than this number
                             #everything else works fine, so go with 49
         self.numSixes = 18
-        self.numOthers = 7 
+        self.numOthers = 7
         self.picqueue = []
         if (not picQueue):
             self.picqueue = self.formPicQueue(self.myPics)
         else:
             self.picqueue = picQueue
-        self.possibleTimes = possibleTimes 
+        self.possibleTimes = possibleTimes
         self.thisTrial = trialNum
         self.visState = 0
         self.currAfter = None
@@ -105,26 +105,26 @@ class Choice:
         #        self.possibleTimes.append((i + 1) * 50)
         #    random.shuffle(self.possibleTimes)
         #print str(self.possibleTimes)
-        #return self.possibleTimes.pop() 
+        #return self.possibleTimes.pop()
 
     def choice1Callback(self, event):#eventually, we can just call choice again
-        self.currTrialData["choice_made"] = 1 
+        self.currTrialData["choice_made"] = 1
         self.currTrialData['time_click'] = misc.getCurrTime()
-        misc.postData(self.currTrialData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobiletrialscript.php")
+        misc.postData(self.currTrialData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobiletrialscript.php", "trial.txt")
         self.cycleVis()
-        
+
     def choice2Callback(self, event):
         self.currTrialData["choice_made"] = -1
         self.currTrialData['time_click'] = misc.getCurrTime()
-        misc.postData(self.currTrialData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobiletrialscript.php")
+        misc.postData(self.currTrialData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobiletrialscript.php", "trial.txt")
         self.cycleVis()
- 
+
     def checkTrial(self):
         if (self.thisTrial < self.numTrials):
             self.container1.grid_forget()
             self.__init__(self.myParent, self.myBlockData, self.myPics, (self.thisTrial + 1), self.possibleTimes, self.picqueue)
         else:
-            self.myBlockData['time_end'] = misc.getCurrTime() 
+            self.myBlockData['time_end'] = misc.getCurrTime()
             self.container1.grid_forget()
             our_breakinstance = our_break.Break(self.myParent, self.myBlockData, self.myPics)
 

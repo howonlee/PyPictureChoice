@@ -8,7 +8,7 @@ class Break:
         self.myBlockData = blockData
         self.myPics = pics
         self.myBlockData['break_time_begin'] = misc.getCurrTime()
-        self.totalNumBlocks = 2
+        self.totalNumBlocks = 6
         self.container1 = Frame(parent, style="Card.TFrame")
         self.container1.rowconfigure(0, minsize = misc.getHeight(parent) * 0.8)
         self.container1.rowconfigure(1, minsize = misc.getHeight(parent) * 0.2)
@@ -30,13 +30,13 @@ class Break:
 
     def toBlockCallback(self, event):
         self.myBlockData['break_time_end'] = misc.getCurrTime()
-        misc.postData(self.myBlockData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobileblockscript.php")
-        self.container1.grid_forget() 
+        misc.postData(self.myBlockData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobileblockscript.php", "blocks.txt")
+        self.container1.grid_forget()
         blockinstance = block.Block(self.myParent, self.myBlockData, self.myPics)
 
     def exitCallback(self, event):
         self.myBlockData['break_time_end'] = misc.getCurrTime()
-        misc.postData(self.myBlockData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobileblockscript.php")
-        misc.postData({'exp_id' : self.myBlockData['exp_id'], 'exp_code' : self.myCode}, "www.stanford.edu", "/group/pdplab/cgi-bin/expend.php")
+        misc.postData(self.myBlockData, "www.stanford.edu", "/group/pdplab/cgi-bin/mobileblockscript.php", "blocks.txt")
+        misc.postData({'exp_id' : self.myBlockData['exp_id'], 'exp_code' : self.myCode}, "www.stanford.edu", "/group/pdplab/cgi-bin/expend.php", "expend.txt")
         print str(self.myBlockData)
         self.myParent.quit()

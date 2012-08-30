@@ -23,12 +23,12 @@ class MainApp:
         self.toBlock.focus_force()
         self.toBlock.bind("<Button-1>", self.toBlockClick)
         self.toBlock.grid(column=0, row=2, sticky=(N, W, E, S))
-    
+
     def toBlockClick(self, event):
         ''' toBlockClick
          pressed in main screen, goes to block screens '''
         self.mTurkData = {'mturk_id' : self.mTurkText.get(), 'exp_id' : self.myBlockData['exp_id']}
-        misc.postData(self.mTurkData, 'www.stanford.edu', '/group/pdplab/cgi-bin/mturkid.php') 
+        misc.postData(self.mTurkData, 'www.stanford.edu', '/group/pdplab/cgi-bin/mturkid.php', "mturk.txt")
         self.container1.grid_forget()
         blockinstance = block.Block(self.myParent, self.myBlockData, self.myPics)
- 
+

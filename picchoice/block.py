@@ -9,7 +9,7 @@ class Block:
         self.myBlockData = blockData
         self.myPics = pics
         self.myBlockData['block_num'] = self.myBlockData['block_num'] + 1
-        self.blockLabelText = ("Block #: " + str(self.myBlockData['block_num']) + " of 2")
+        self.blockLabelText = ("Block #: " + str(self.myBlockData['block_num']) + " of 6")
         self.container1 = Frame(parent, style="Card.TFrame")
         self.container1.rowconfigure(0, minsize = misc.getHeight(parent) * 0.8)
         self.container1.rowconfigure(1, minsize = misc.getHeight(parent) * 0.2)

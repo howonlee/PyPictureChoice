@@ -6,7 +6,7 @@ import Image, ImageTk
 import httplib, urllib, os, sys
 
 expId = picchoice.misc.getExpId()
-blockData = {'time_begin' : 0, 'time_end' : 0, 'break_time_begin' : 0, 
+blockData = {'time_begin' : 0, 'time_end' : 0, 'break_time_begin' : 0,
             'break_time_end' : 0, 'interruption' : False, 'exp_id' : expId,
             'block_num' : 0}
 pics = picchoice.misc.getpics()
